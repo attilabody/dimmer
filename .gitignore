@@ -7,4 +7,6 @@ Debug*/
 **/.idea/workspace.xml
 *.s#?
 *.sch.lck
+*.*bak
+kicad/*.net
 .vs/
