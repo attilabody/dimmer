@@ -98,7 +98,7 @@ F 1 "CONN_01X02" V 2250 3100 50  0000 C CNN
 F 2 "con-wago-508:W237-132" H 2150 3100 50  0001 C CNN
 F 3 "" H 2150 3100 50  0000 C CNN
 	1    2150 3100
-	-1   0    0    -1  
+	-1   0    0    1   
 $EndComp
 $Comp
 L +5V #PWR03
@@ -175,7 +175,7 @@ F 1 "CONN_01X02" V 8350 2700 50  0000 C CNN
 F 2 "con-wago-508:W237-132" H 8250 2700 50  0001 C CNN
 F 3 "" H 8250 2700 50  0000 C CNN
 	1    8250 2700
-	1    0    0    1   
+	1    0    0    -1  
 $EndComp
 $Comp
 L TACTILE_SW SW4
@@ -237,8 +237,6 @@ Wire Wire Line
 	7700 3150 7750 3150
 Wire Wire Line
 	8050 3350 8050 3450
-Wire Wire Line
-	6600 3150 7100 3150
 Wire Wire Line
 	6600 2950 6950 2950
 Wire Wire Line
@@ -344,6 +342,12 @@ $EndComp
 Wire Wire Line
 	7600 2750 7600 3450
 Wire Wire Line
-	7500 3150 7600 3150
-Connection ~ 7600 3150
+	6600 3150 7000 3150
+Wire Wire Line
+	7000 3150 7000 3050
+Wire Wire Line
+	7000 3050 7100 3050
+Wire Wire Line
+	7500 3050 7600 3050
+Connection ~ 7600 3050
 $EndSCHEMATC
