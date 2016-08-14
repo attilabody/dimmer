@@ -21,6 +21,7 @@
 //////////////////////////////////////////////////////////////////////////////
 bool 		g_down = true;
 uint8_t		g_dim = 0;
+uint8_t		g_prev = 128;
 uint16_t	g_now = 0;
 
 PushButton				g_buttons[2];
@@ -80,7 +81,7 @@ ISR(TIMER1_OVF_vect)
 		g_buttons[button].Tick(g_now);
 	}
 
-	switch(g_buttons[0].GetState())
+	switch(g_buttons[0].GetState())		//	up
 	{
 		case PushButton::active:
 			if(!(divider & 15) && g_dim < 0xff)
@@ -92,14 +93,19 @@ ISR(TIMER1_OVF_vect)
 			break;
 			
 		case PushButton::doubleclicked:
-			g_dim = 0xff;
+			if(!g_dim && g_prev) {
+				g_dim = g_prev;
+			} else {
+				g_prev = g_dim;
+				g_dim = 0xff;
+			}
 			break;
 			
 		case PushButton::inactive:
 			break;
 	}
 	
-	switch(g_buttons[1].GetState())
+	switch(g_buttons[1].GetState())		//	down
 	{
 		case PushButton::active:
 			if(!(divider & 7) && g_dim > 0)
@@ -111,7 +117,12 @@ ISR(TIMER1_OVF_vect)
 			break;
 		
 		case PushButton::doubleclicked:
-			g_dim = 0;
+			if(g_dim == 255 && g_prev != 255) {
+				g_dim = g_prev;
+			} else {
+				g_prev = g_dim;
+				g_dim = 0;
+			}
 			break;
 		
 		case PushButton::inactive:
