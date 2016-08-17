@@ -5,7 +5,7 @@
  *      Author: compi
  */
 #ifndef F_CPU
-#define F_CPU 8000000
+#define F_CPU 16000000
 #endif
 
 #include <avr/io.h>
@@ -19,10 +19,14 @@
 #define COUNTOF(x) (sizeof(x)/sizeof(x[0]))
 
 //////////////////////////////////////////////////////////////////////////////
+
+#define TRIAC_FIRE  PB0;
+
 bool 		g_down = true;
 uint8_t		g_dim = 0;
 uint8_t		g_prev = 128;
 uint16_t	g_now = 0;
+uint8_t		230_dim = 0;
 
 PushButton				g_buttons[2];
 static const uint8_t	g_buttonbits[2] = {PINB0, PINB3};
@@ -31,19 +35,32 @@ static const uint8_t	g_dimValues[] = {0, 1, 13, 26, 51, 84, 128, 192, 255};
 //////////////////////////////////////////////////////////////////////////////
 void Init()
 {
-	DDRB = _BV(DDB4);
+	DDRB = _BV(DDB2); // LED PWM set to Output
 
-	//timer clock = F_CPU / 64 =  125000Hz
-	TCCR1 = _BV(CS12) | _BV(CS11) | _BV(CS10);
-	GTCCR = _BV(PWM1B) |_BV(COM1B1);
+	//timer clock = F_CPU / 64 =  250000Hz
+	TCCR1 = _BV(CS12) | _BV(CS11) | _BV(CS10); // ?
+	GTCCR = _BV(PWM1B) |_BV(COM1B1);  // ?
 	OCR1C = 0xff;
 	OCR1B = g_dim;
-	TIMSK = _BV(TOV1);	//125000 / 256 = 488.28125Hz
+	TIMSK = _BV(TOV1);	//256000 / 256 = 1KHz
+	
+	//Init Zero Cross Timer
+	
+	//Timer Clock = F_CPU / 1024 = 15625 Hz
+	TCCR2 =  _BV(CS12) | _BV(CS10);
 
 	for(uint8_t button = 0; button < COUNTOF(g_buttons); ++button)
 		g_buttons[button].Init(PINB, g_buttonbits[button], 10, 100, 150);
 
+}
+
+void InitInterrupt(){
+	
+	EIMSK |= _BV(INT0); // Enable INT0
+	EICRA |= (1 << ISC01); // Set INT0 to falling edge
+	
 	sei();
+	
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -67,6 +84,7 @@ void SetNext(bool up)
 int main()
 {
 	Init();
+	InitInterrupt();
 	while(true);
 	return 0;
 }
@@ -137,4 +155,11 @@ ISR(TIMER1_OVF_vect)
 	else if(OCR1B > g_dim)
 		--OCR1B;
 
+}
+
+
+ISR (INT0_vect) {
+	
+	
+	
 }
