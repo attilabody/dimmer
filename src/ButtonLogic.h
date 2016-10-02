@@ -13,10 +13,7 @@ class ButtonLogic
 {
 public:
 	ButtonLogic() = default;
-	void Init(
-	    uint16_t clickDelay,
-	    uint16_t dimDelay
-	);
+	void Init(uint16_t clickDelay, uint16_t dimDelay);
 	void Reset();
 
 	uint8_t Tick(bool buttonActive, uint16_t now);
@@ -33,13 +30,13 @@ protected:
 private:
 	bool		m_lastInputActive = false;
 
-	uint16_t	m_clickDelay;
-	uint16_t	m_dimDelay;
+	uint16_t	m_clickDelay = 0;
+	uint16_t	m_dimDelay = 0;
 
 	uint16_t	m_startTick = 0;
 	uint8_t		m_releaseCount = 0;
 
-	uint8_t		m_state;
+	uint8_t		m_state = 0;
 };
 
 #endif //__BUTTONLOGIC_H__

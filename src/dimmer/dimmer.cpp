@@ -13,18 +13,20 @@
 #include <avr/interrupt.h>
 #include <inttypes.h>
 
-#include "PushButton.h"
+#include "SmartButton.h"
 
 //////////////////////////////////////////////////////////////////////////////
 #define COUNTOF(x) (sizeof(x)/sizeof(x[0]))
 
 //////////////////////////////////////////////////////////////////////////////
+IOPort	g_port(&PINB, &PORTB, &DDRB, (1 << DDB4), ~(1 << PORTB4));
+
 bool 		g_down = true;
 uint8_t		g_dim = 0;
 uint8_t		g_prev = 128;
 uint16_t	g_now = 0;
 
-PushButton				g_buttons[2];
+SmartButton				g_buttons[2] ;
 static const uint8_t	g_buttonbits[2] = {PINB0, PINB3};
 static const uint8_t	g_dimValues[] = {0, 1, 13, 26, 51, 84, 128, 192, 255};
 
@@ -40,9 +42,9 @@ void Init()
 	OCR1B = g_dim;
 	TIMSK = _BV(TOV1);	//125000 / 256 = 488.28125Hz
 
-	for(uint8_t button = 0; button < COUNTOF(g_buttons); ++button)
-		g_buttons[button].Init(PINB, g_buttonbits[button], 10, 100, 150);
-
+	for(uint8_t button = 0; button < COUNTOF(g_buttons); ++button) {
+		g_buttons[button].Init(10, &g_port, g_buttonbits[button], true, 144, 488);
+	}
 	sei();
 }
 
@@ -75,24 +77,24 @@ int main()
 ISR(TIMER1_OVF_vect)
 {
 	static uint8_t divider = 0;
+	uint8_t	states[COUNTOF(g_buttons)];
+
 	++g_now;
 
 	for(uint8_t button = 0; button < COUNTOF(g_buttons); ++button) {
-		g_buttons[button].Tick(g_now);
+		states[button] = g_buttons[button].Tick(g_now);
 	}
 
-	switch(g_buttons[0].GetState())		//	up
+	switch(states[0])		//	up
 	{
-		case PushButton::active:
-			if(!(divider & 15) && g_dim < 0xff)
-				++g_dim;
+		case 0:
 			break;
 		
-		case PushButton::clicked:
+		case 1:
 			SetNext(true);
 			break;
 			
-		case PushButton::doubleclicked:
+		case 2:
 			if(!g_dim && g_prev) {
 				g_dim = g_prev;
 			} else {
@@ -100,35 +102,36 @@ ISR(TIMER1_OVF_vect)
 				g_dim = 0xff;
 			}
 			break;
-			
-		case PushButton::inactive:
+
+		case 255:
+			if(!(divider & 15) && g_dim < 0xff)
+				++g_dim;
 			break;
 	}
 	
-	switch(g_buttons[1].GetState())		//	down
+	switch(states[1])		//	down
 	{
-		case PushButton::active:
-			if(!(divider & 7) && g_dim > 0)
-				--g_dim;
-			break;
+	case 0:
+		break;
+
+	case 1:
+		SetNext(false);
+		break;
 		
-		case PushButton::clicked:
-			SetNext(false);
-			break;
+	case 2:
+		if(g_dim == 255 && g_prev != 255) {
+			g_dim = g_prev;
+		} else {
+			g_prev = g_dim;
+			g_dim = 0;
+		}
+		break;
 		
-		case PushButton::doubleclicked:
-			if(g_dim == 255 && g_prev != 255) {
-				g_dim = g_prev;
-			} else {
-				g_prev = g_dim;
-				g_dim = 0;
-			}
-			break;
-		
-		case PushButton::inactive:
-			break;
+	case 255:
+		if(!(divider & 7) && g_dim > 0)
+			--g_dim;
+		break;
 	}
-	
 	
 	++divider;
 
