@@ -62,6 +62,5 @@ inline void IOPort::Write(uint8_t value)
 	*m_outReg = value;
 }
 
-
 #endif //__IOPORT_H__
 
