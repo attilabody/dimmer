@@ -8,8 +8,8 @@
 #ifndef SRC_SMARTBUTTON_H_
 #define SRC_SMARTBUTTON_H_
 
-#include <ButtonLogic.h>
-#include <DebouncedInput.h>
+#include "ButtonLogic.h"
+#include "DebouncedInput.h"
 
 class SmartButton
 {

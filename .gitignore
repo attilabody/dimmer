@@ -1,5 +1,6 @@
 Release*/
 Debug*/
+*.VC.*
 .ino.cpp
 *.d
 .settings/

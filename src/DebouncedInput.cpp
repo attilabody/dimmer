@@ -5,7 +5,7 @@
  *      Author: compi
  */
 
-#include <DebouncedInput.h>
+#include "DebouncedInput.h"
 
 //////////////////////////////////////////////////////////////////////////////
 void DebouncedInput::Init(uint16_t debounceDelay, IOPort* port, uint8_t bit, bool activeLow)

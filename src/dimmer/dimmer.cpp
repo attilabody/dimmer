@@ -13,7 +13,7 @@
 #include <avr/interrupt.h>
 #include <inttypes.h>
 
-#include "SmartButton.h"
+#include "../SmartButton.h"
 
 //////////////////////////////////////////////////////////////////////////////
 #define COUNTOF(x) (sizeof(x)/sizeof(x[0]))
@@ -26,7 +26,7 @@ uint8_t		g_dim = 0;
 uint8_t		g_prev = 128;
 uint16_t	g_now = 0;
 
-SmartButton				g_buttons[2] ;
+SmartButton				g_buttons[1] ;
 static const uint8_t	g_buttonbits[2] = {PINB0, PINB3};
 static const uint8_t	g_dimValues[] = {0, 1, 13, 26, 51, 84, 128, 192, 255};
 
@@ -77,7 +77,7 @@ int main()
 ISR(TIMER1_OVF_vect)
 {
 	static uint8_t divider = 0;
-	uint8_t	states[COUNTOF(g_buttons)];
+	uint8_t	states[2] {0, 0};//COUNTOF(g_buttons)];
 
 	++g_now;
 

@@ -5,7 +5,7 @@
  *      Author: compi
  */
 
-#include <SmartButton.h>
+#include "SmartButton.h"
 
 void SmartButton::Init(uint16_t debounceDelay, IOPort* port, uint8_t bit, bool activeLow, uint16_t clickDelay, uint16_t dimDelay)
 {
