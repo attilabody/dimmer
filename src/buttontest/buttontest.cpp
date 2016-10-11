@@ -33,12 +33,13 @@ inline uint8_t Tick(ButtonLogic &btn, bool newStatus)
 
 inline uint8_t _Tick(ButtonLogic &btn, bool newStatus)
 {
-
+	g_pinStatus = newStatus;
+	auto rsb = btn.GetRawState();
 	auto st = btn.Tick(newStatus, g_now++);
-	auto rs = btn.GetRawState();
-	auto st2 = btn.GetState();
-	auto st3 = btn.GetState();
-	cout << g_now << ", " << g_pinStatus << ", " << StateToString(st) << ", " << StateToString(rs) << ", " << StateToString(st2) << ", " << StateToString(st3) << endl;
+	auto rsa = btn.GetRawState();
+//	auto st2 = btn.GetState();
+//	auto st3 = btn.GetState();
+	cout << g_now << ", " << g_pinStatus << ", " << StateToString(rsb) << ", > " << StateToString(st) << " < , " << StateToString(rsa) << endl;//<< ", " << StateToString(st2) << ", " << StateToString(st3) << endl;
 	return st;
 }
 
@@ -46,7 +47,7 @@ int main() {
 	ButtonLogic	btn;
 
 	cout << hex;
-	btn.Init(3, 4);
+	btn.Init(1, 2);
 
 	//
 
@@ -81,6 +82,9 @@ int main() {
 	rslt = _Tick(btn, true);
 	rslt = _Tick(btn, true);
 	rslt = _Tick(btn, true);
+	
+	rslt = btn.GetState();
+
 	rslt = _Tick(btn, true);
 	rslt = _Tick(btn, true);
 	rslt = _Tick(btn, true);

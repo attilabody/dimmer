@@ -26,8 +26,8 @@ uint8_t		g_dim = 0;
 uint8_t		g_prev = 128;
 uint16_t	g_now = 0;
 
-SmartButton				g_buttons[1] ;
-static const uint8_t	g_buttonbits[2] = {PINB0, PINB3};
+SmartButton				g_buttons[2] ;
+static const uint8_t	g_buttonbits[2] = {PINB1, PINB3};
 static const uint8_t	g_dimValues[] = {0, 1, 13, 26, 51, 84, 128, 192, 255};
 
 //////////////////////////////////////////////////////////////////////////////

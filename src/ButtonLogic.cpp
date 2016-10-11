@@ -10,6 +10,8 @@
 //////////////////////////////////////////////////////////////////////////////
 uint8_t ButtonLogic::Tick(bool inputActive, uint16_t now)
 {
+	uint8_t	ret = 0;
+
 	if(inputActive != m_lastInputActive) {
 		m_lastInputActive = inputActive;
 		if(!inputActive) {					//release
@@ -26,20 +28,17 @@ uint8_t ButtonLogic::Tick(bool inputActive, uint16_t now)
 
 	if(inputActive) {
 		if((m_dimDelay != 0 || m_clickDelay == 0) && ellapsed >= m_dimDelay) {
-			m_state = 255;
+			ret = m_state = 255;
 			m_releaseCount = 0;
 		}
 	} else {
-		if(ellapsed >= m_clickDelay) {
-			if(m_releaseCount != 0) {
-				m_state = m_releaseCount;
-				m_startTick = now;
-				m_releaseCount = 0;
-			}
+		if(ellapsed >= m_clickDelay && m_releaseCount != 0) {
+			ret = m_state = m_releaseCount;
+			m_releaseCount = 0;
 		}
 	}
 
-	return m_state;
+	return ret;
 }
 
 //////////////////////////////////////////////////////////////////////////////
