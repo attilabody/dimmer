@@ -1,35 +1,4 @@
 EESchema Schematic File Version 2
-LIBS:power
-LIBS:device
-LIBS:transistors
-LIBS:conn
-LIBS:linear
-LIBS:regul
-LIBS:74xx
-LIBS:cmos4000
-LIBS:adc-dac
-LIBS:memory
-LIBS:xilinx
-LIBS:microcontrollers
-LIBS:dsp
-LIBS:microchip
-LIBS:analog_switches
-LIBS:motorola
-LIBS:texas
-LIBS:intel
-LIBS:audio
-LIBS:interface
-LIBS:digital-audio
-LIBS:philips
-LIBS:display
-LIBS:cypress
-LIBS:siliconi
-LIBS:opto
-LIBS:atmel
-LIBS:contrib
-LIBS:valves
-LIBS:irlz44nto220v
-LIBS:button
 LIBS:dimmer-cache
 EELAYER 25 0
 EELAYER END
@@ -71,9 +40,9 @@ $Comp
 L AP111750 U1
 U 1 1 57A7317B
 P 3150 3050
-F 0 "U1" H 2950 3250 50  0000 C CNN
-F 1 "AMS1117-5.0" H 3150 3250 50  0000 L CNN
-F 2 "Diodes_SMD:DO-214BA" H 3150 3150 50  0001 C CIN
+F 0 "U1" H 3250 2750 50  0000 C CNN
+F 1 "AMS1117-5.0" H 2900 3350 50  0000 L CNN
+F 2 "TO_SOT_Packages_SMD:SOT-223" H 3150 3150 50  0001 C CIN
 F 3 "" H 3150 3050 50  0000 C CNN
 	1    3150 3050
 	1    0    0    -1  
@@ -312,8 +281,21 @@ Wire Wire Line
 	7500 3050 7600 3050
 Connection ~ 7600 3050
 $Comp
+L D_Small D1
+U 1 1 58022341
+P 2700 3050
+F 0 "D1" H 2700 3345 50  0000 C CNN
+F 1 "D_Small" H 2700 3254 50  0000 C CNN
+F 2 "Diodes_SMD:SMA_Standard" H 2700 3163 50  0001 C CNN
+F 3 "" V 2700 3050 50  0000 C CNN
+	1    2700 3050
+	-1   0    0    -1  
+$EndComp
+Wire Wire Line
+	2800 3050 2850 3050
+$Comp
 L ATTINY85-S IC1
-U 1 1 57AF71E0
+U 1 1 58047285
 P 5250 3100
 F 0 "IC1" H 5250 3707 50  0000 C CNN
 F 1 "ATTINY85-S" H 5250 3616 50  0000 C CNN
@@ -322,17 +304,4 @@ F 3 "" H 5250 3100 50  0000 C CNN
 	1    5250 3100
 	-1   0    0    -1  
 $EndComp
-$Comp
-L D_Small D1
-U 1 1 58022341
-P 2700 3050
-F 0 "D1" H 2700 3345 50  0000 C CNN
-F 1 "D_Small" H 2700 3254 50  0000 C CNN
-F 2 "Diodes_SMD:DO-214BA" H 2700 3163 50  0000 C CNN
-F 3 "" V 2700 3050 50  0000 C CNN
-	1    2700 3050
-	-1   0    0    -1  
-$EndComp
-Wire Wire Line
-	2800 3050 2850 3050
 $EndSCHEMATC
